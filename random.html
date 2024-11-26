@@ -1,0 +1,121 @@
+<html>
+
+	<head>
+	<title>Is random random?</title>
+
+	<style>
+
+	body{
+		margin-top: 25px;
+	}
+
+	#title{
+		text-align: center;
+		font-size: 24pt;
+	}
+
+	#sample{
+		margin-top: 25px;
+		text-align: center;
+	}
+
+	#canvas{
+		margin-top: 25px;
+		text-align: center;
+	}
+
+	canvas{
+		
+		border: solid 1px;
+		border-radius: 10px;
+		
+	}
+
+	#percentage{
+		margin-top: 25px;
+		text-align: center;
+}
+
+	</style>
+
+	</head>
+
+	<body>
+
+		<div id="title">Is random random?</div>
+
+		<br>
+
+		<div id="sample">
+			Number of samples:
+			<input id="sampleInput" type="number"></input>
+			<button id="calculate">Calculate</button>
+		</div>
+
+		<div id="canvas">
+		<canvas></canvas>
+		</div>
+
+		<div id="percentage">
+		</div>
+
+		<script>
+			var sampleQt = 1000
+			var result = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+			const barWidth = 30
+			const canvas = document.querySelector('canvas')
+			canvas.width = barWidth * result.length * 2 + barWidth
+			canvas.height = barWidth * 7
+			const c = canvas.getContext("2d")
+			c.textAlign = 'center'
+		
+			document.querySelector('button').addEventListener('click', e =>
+			{
+				sampleQt = document.querySelector('input').valueAsNumber
+				
+				result = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+				for (var i = 0; i < sampleQt; i++)
+				{
+					result[Math.floor(Math.random() * 10)]++
+				}
+				
+				c.clearRect(0, 0, canvas.width, canvas.height)
+				for (var i = 0; i < result.length; i++)
+				{
+					var barHeight = (result[i] * 5 * barWidth) / Math.max(...result)
+					c.fillRect(barWidth * i * 2 + barWidth, canvas.height - barWidth, barWidth, -barHeight)
+				
+					c.fillText(i + 1, barWidth * i * 2 + (barWidth * 1.5), canvas.height - barWidth / 2)
+
+					c.fillText(result[i], barWidth * i * 2 + (barWidth * 1.5), canvas.height - barWidth - barHeight - (barWidth * 0.1))
+				}
+				
+				const max = Math.max(...result)
+				const min = Math.min(...result)
+				const percentage = (((min * 100) / max) - 100) * -1
+				document.getElementById('percentage').textContent =
+				`
+					The highest value is ${max}.
+					The lowest value is ${min}.
+					The difference is ${percentage.toString().substring(0, 5)}%
+				`
+			})
+			
+			
+			console.log(result)
+		</script>
+	</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
